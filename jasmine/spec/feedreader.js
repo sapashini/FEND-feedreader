@@ -42,7 +42,7 @@ $(function() {
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
-          it('name is defined', function() {
+          it('name is defined', () => {
 			for(let feed of allFeeds) {
 				expect(feed.name).toBeDefined();
 				expect(feed.name.length).not.toBe(0);
@@ -92,15 +92,32 @@ $(function() {
 		 });
 
 		 it('completes its work', function() {
-			expect(feed.children.contains > 0).toBe(false);
+			expect(feed.children.length > 0).toBe(true);
 		 });
 	});
 
     /* TODO: Write a new test suite named "New Feed Selection" */
-
+    describe('New Feed Selection', function() {
+    	const feed = document.querySelector('.feed');
+		const firstFeed = [];
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-    
+
+        beforeEach(function (done) {
+			loadFeed(0);
+			Array.from(feed.children).forEach(function(entry) {
+				firstFeed.push(entry.innerText);
+			});
+			loadFeed(1, done);
+		 });
+
+		it('content actually changes', function() {
+			Array.from(feed.children).forEach(function(entry,index) {
+				expect(entry.innerText === firstFeed[index]).toBe(false);
+			});
+
+		});
+    });
 }());
